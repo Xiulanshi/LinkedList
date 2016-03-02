@@ -13,7 +13,7 @@ import UIKit
 //Here’s an example of a “doubly” linked list structure written in Swift. In addition to storing a key, the structure also provides pointers to the next and previous items. Using generics, the struc- ture can also store any type of object and supports nil values. The concept of combining keys and pointers to create structures not only applies to linked lists, but to other objects like tries, queues and graphs.
 
 //generic doubly linked list structure
-
+/*
 class LLNode<T> {
     // create a new LLNode instance
     var head: LLNode<T> = LLNode<T>()
@@ -74,9 +74,156 @@ public class LinkedList<T: Equatable> {
 }
 
 
+//REMOVING LINKS
+//Conversely, here’s an example of removing items from a list. Removing links not only involves reclaiming memory (for the deleted item), but also reassigning links so the chain remains unbro- ken.
+
+//remove at specific index
+
+func removeLinkAtIndex(index: Int) {
+    
+    //check for nil conditions
+    if ((index < 0) || (index > self.count - 1)) || (head.key == nil)) {
+        print("link index does not exist .. ")
+        return
+    }
+    
+    var current: LLNode<T>? = head
+    var trailer: LLNode<T>?
+    var listIndex: Int = 0
+    
+    //determine if the removal is at the head
+    if (index == 0) {
+        current = current?.next
+        head = current!
+        return
+        
+    }
+    
+    //iterate through the remaining items
+    while (current != nil) {
+        if (listIndex == index) {
+            
+            //redirect the trailer and next pointers
+            trailer!.next = current?.next
+            current = nil
+            break
+            
+        }
+        
+        //update the assignments
+        trailer = current
+        
+        current = current?.next
+        listIndex++
+    } //end while
+    
+}//end function
+
+//COUNTING LINKS
+//  It can also be convenient to count link items. In Swift, this can be expressed as a computed prop- erty. For example, the following technique will allow a linked list instance to use a dot notation. (e.g., someList.count).
 
 
+// the number of items
 
+    var count: Int {
+        
+        if head.key == nil {
+            return 0
+        }
+        else     {
+            var current: LLNode = head
+            var x: Int = 1
+            
+            //cycle through the list of items
+            while current.next != nil {
+                current = current.next!
+                x++
+            }
+            return x
+        }
+    
+}
+
+
+//EFFICIENCY
+// LinkedliststypicallyprovideO(n) forstorageandlookup.Aswe’llsee,linkedlistsareoftenused with other structures to create new models. Algorithms with an efficiency of O(n) are said to run in linear time.
+
+}
+
+*/
+
+//Generics
+
+//student linked list srtucture
+
+//class StudentNode {
+//    var key: Student?
+//    var next: StudentNode?
+//}
+
+
+//refactored linked list structure
+class LLNode<T> {
+    var key: T?
+    var next: LLNode<T>?
+}
+
+//a new list of students
+var studentList = LLNode<Student>()
+
+//a new list of teachers
+var teacherList = LLNode<Teacher>()
+
+
+//insert at specific index
+
+func addLinkAtIndex(key: T, index: Int) {
+    
+    //check for nil conditions 
+    if ((index < 0) || (index > (self.count - 1))) {
+        print("link index does not exist..")
+    }
+    
+    // establish the head node
+    if (head.key == nil) {
+        head.key = key
+        return
+    }
+    
+    //establish the trailer, current and new items
+    var current: LLNode<T>? = head
+    var trailer: LLNode<T>?
+    var listIndex: Int = 0
+    //iterate through the list to find the insertion point
+    while (current != nil) {
+        if (index == listIndex) {
+            var childToUse: LLNode = LLNode<T>() //create the new node
+            childToUse.key = key
+            //connect the node in front of the current node
+            childToUse.next = current
+            childToUse.previous = trailer
+            //use optional binding when using the trailer
+            if let linktrailer = trailer {
+                linktrailer.next = childToUse
+                childToUse.previous = linktrailer
+            }
+            //point new node to the current / previous
+            current!.previous = childToUse
+            //replace the head node if required
+            if (index == 0) {
+                head = childToUse
+            }
+            break
+            
+        } //end if
+        
+        //iterate through to the next item
+        trailer = current
+        current = current?.next
+        listIndex += 1
+    } //end while
+    
+}
 
 
 
